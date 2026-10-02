@@ -15,7 +15,7 @@
    (core.css normally anchors #omg-theme-picker there directly). */
 #omg-header-tools {
   position: absolute;
-  top: 5px;
+  top: 0;
   right: 5px;
   z-index: 200;
   display: flex;
@@ -32,15 +32,15 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  margin-right: 2px;
+  width: 32px;
+  height: 32px;
+  margin-right: 0;
   border-radius: 50%;
   opacity: 0.75;
 }
 #omg-github svg {
-  width: 20px; /* same size in every theme (the themes' generic svg rule differs) */
-  height: 20px;
+  width: 26px; /* same size in every theme (the themes' generic svg rule differs) */
+  height: 26px;
 }
 :where(html[data-theme="light"]) #omg-github svg {
   fill: #1a212d;
@@ -51,4 +51,9 @@ html[data-theme="evol-blue"] #omg-github svg {
 #omg-github:hover,
 #omg-github:focus-visible {
   opacity: 1;
+}
+
+/* header scrolls away with the page (core.css makes it sticky) */
+#omg-header {
+  position: relative;
 }
