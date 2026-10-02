@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-063933E3C2"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-063933E3C2");
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Infinite Coastlines</title>
+    <meta
+      name="description"
+      content="An interactive guide to the coastline paradox and fractal dimension: measure an island with shrinking rulers, build a Koch snowflake, and zoom into the Mandelbrot set."
+    />
+    <meta name="author" content="Olivier Giulieri" />
+    <link
+      rel="canonical"
+      href="https://evoluteur.github.io/infinite-coastlines/"
+    />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <meta name="theme-color" content="#1a212d" />
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Overpass:wght@300;400;600&family=Overpass+Mono&display=swap"
+    />
+    <link id="omg-core-css" rel="stylesheet" href="css/core.css" />
+    <link id="omg-theme-css" rel="stylesheet" href="css/themes/dark/dark.css" />
+    <link id="omg-density-css" rel="stylesheet" href="css/densities.css" />
+    <link rel="stylesheet" href="css/overrides.css" />
+    <link rel="stylesheet" href="css/coastlines.css" />
+
+    <script src="js/omg.js"></script>
+    <script src="js/coastlines.js"></script>
+  </head>
+
+  <body
+    onload="
+      setupPage('home');
+      initCoastlines();
+    "
+    id="omg-body"
+  >
+    <div id="omg-header">
+      <h1>Infinite Coastlines</h1>
+      <div id="omg-header-tools">
+        <div id="omg-theme-picker"></div>
+        <a
+          id="omg-github"
+          href="https://github.com/evoluteur/infinite-coastlines"
+          target="_blank"
+          rel="noopener"
+          title="Infinite Coastlines on GitHub"
+          aria-label="Infinite Coastlines on GitHub"
+          ><svg viewBox="0 0 16 16" aria-hidden="true">
+            <path
+              d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+            /></svg
+        ></a>
+      </div>
+    </div>
+    <h2>How long is a coastline?</h2>
+    <div class="content">
+      <p class="tagline">
+        It depends on the length of your ruler, and the closer you look, the
+        longer it gets. Six interactive charts on the coastline paradox and
+        fractal dimension, from a ruler survey of an island to the edge of the
+        Mandelbrot set.
+      </p>
+
+<section>
+  <div class="col prose">
+    <div class="eyebrow">Chart 1</div>
+    <h2>Two countries, one border, two lengths</h2>
+    <p>In the 1950s the English mathematician Lewis Fry Richardson was studying whether wars were more likely between countries that shared longer borders. He hit an odd problem. Spain reported its border with Portugal as 987 km. Portugal reported the same border as 1,214 km.</p>
+    <p>Neither country was wrong. Portugal, the smaller country, had measured with a shorter ruler. A shorter ruler fits into more of the wiggles, so it finds more length. Try it on the island below.</p>
+  </div>
+
+  <div class="plate">
+    <div>
+      <div class="plate-cap">Richardson Island · generated survey</div>
+      <canvas id="map" aria-label="Map of a generated island with a ruler path traced around its coast"></canvas>
+    </div>
+    <div class="panel">
+      <div class="ctrl">
+        <label for="ruler">Ruler length <output id="rulerOut" class="num">25 km</output></label>
+        <input id="ruler" type="range" min="0" max="1000" value="720">
+      </div>
+      <dl class="readouts">
+        <div><dt>Ruler steps</dt><dd id="steps" class="num">0</dd></div>
+        <div><dt>Coast length</dt><dd id="length" class="num hot">0 km</dd></div>
+      </dl>
+      <div>
+        <div class="plate-cap">Length vs. ruler · log–log</div>
+        <canvas id="plot" aria-label="Log-log plot of measured coast length against ruler length"></canvas>
+      </div>
+      <dl class="readouts">
+        <div><dt>Slope of line</dt><dd id="slope" class="num">0</dd></div>
+        <div><dt>Fractal dimension</dt><dd id="dimEst" class="num hot">0</dd></div>
+      </dl>
+    </div>
+  </div>
+  <p class="note">Every point on the plot is one survey of the same coast. Shrink the ruler 10×, and this coast gets about <span id="factor">2×</span> longer. The points fall on a straight line, so the growth never stops.</p>
+</section>
+
+<section>
+  <div class="col prose">
+    <div class="eyebrow">Chart 2</div>
+    <h2>Rougher coasts grow faster</h2>
+    <p>The slope of that line measures how rough the coast is. A smooth curve gives a flat line: past a certain point, a smaller ruler finds nothing new. A jagged coast gives a steep one.</p>
+    <p>Richardson found the slope was steady for each real coast. Benoit Mandelbrot later read it as a dimension. Take 1 minus the slope, and you get a number between 1 (a smooth line) and 2 (a curve so crinkled it fills the page). Set the roughness of the island and see if the survey recovers it.</p>
+  </div>
+  <div class="plate single">
+    <div class="panel">
+      <div class="ctrl">
+        <label for="rough">Roughness of the island (dimension) <output id="roughOut" class="num">1.25</output></label>
+        <input id="rough" type="range" min="105" max="150" value="125">
+      </div>
+      <button id="newIsland" type="button">Generate a new island</button>
+      <p class="note wide">Changes here redraw the map and plot in Chart 1. The survey estimate wanders a little from the setting because a real island only has a finite number of wiggles to find.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="col prose">
+    <div class="eyebrow">Chart 3</div>
+    <h2>A coastline built from one rule</h2>
+    <p>In 1904 Helge von Koch described a curve with a recipe. Take a line, cut it into thirds, and replace the middle third with two sides of a triangle. Repeat on every new piece, forever. Run it on the three sides of a triangle and you get the Koch snowflake.</p>
+  </div>
+  <div class="plate">
+    <div>
+      <div class="plate-cap">Koch snowflake</div>
+      <canvas id="koch" aria-label="Koch snowflake at the selected iteration"></canvas>
+    </div>
+    <div class="panel">
+      <div class="ctrl">
+        <label for="iter">Iterations <output id="iterOut" class="num">3</output></label>
+        <input id="iter" type="range" min="0" max="7" value="3">
+      </div>
+      <dl class="readouts">
+        <div><dt>Sides</dt><dd id="kSides" class="num">0</dd></div>
+        <div><dt>Side length</dt><dd id="kSide" class="num">0</dd></div>
+        <div><dt>Perimeter</dt><dd id="kPer" class="num hot">0</dd></div>
+        <div><dt>Area</dt><dd id="kArea" class="num">0</dd></div>
+      </dl>
+      <p class="note">Measured against the starting triangle (side 1, area 1). Each step multiplies the perimeter by 4/3, so it grows without limit. The area settles toward exactly 1.6. A finite island, an infinite coast.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="col prose">
+    <div class="eyebrow">Chart 4</div>
+    <h2>What “1.26 dimensions” means</h2>
+    <p>Dimension tells you how a shape scales. Shrink a shape by a factor <i>s</i>, count how many copies <i>N</i> it takes to rebuild the original, and the dimension <i>D</i> is the power that links them.</p>
+  </div>
+  <div class="formula">N = s<sup>D</sup> &nbsp;&nbsp;so&nbsp;&nbsp; D = log N ÷ log s</div>
+  <div class="scaling">
+    <figure><canvas id="sc1" aria-label="A line made of three copies"></canvas>
+      <figcaption>Line, shrunk 3×.<br>3 copies rebuild it.<br>D = log 3 ÷ log 3 = <b>1</b></figcaption></figure>
+    <figure><canvas id="sc2" aria-label="A square made of nine copies"></canvas>
+      <figcaption>Square, shrunk 3×.<br>9 copies rebuild it.<br>D = log 9 ÷ log 3 = <b>2</b></figcaption></figure>
+    <figure><canvas id="sc3" aria-label="A Koch curve made of four copies"></canvas>
+      <figcaption>Koch curve, shrunk 3×.<br>4 copies rebuild it.<br>D = log 4 ÷ log 3 = <b>1.262</b></figcaption></figure>
+  </div>
+  <p class="col">The Koch curve sits between a line and a plane. It is too crinkled to be a line, yet it covers no area. That in-between number is its fractal dimension, and it is the same number the ruler survey measures from the slope.</p>
+</section>
+
+<section>
+  <div class="col prose">
+    <div class="eyebrow">Chart 5</div>
+    <h2>Real coasts, measured</h2>
+    <p>Richardson's surveys, as Mandelbrot interpreted them in his 1967 paper “How Long Is the Coast of Britain?”, plus a later estimate for Norway's fjords.</p>
+  </div>
+  <div class="coasts" id="coasts"></div>
+  <p class="note">Estimates vary with the map scale and the method used. Treat them as a feel for roughness, not as exact constants.</p>
+</section>
+
+<section>
+  <div class="col prose">
+    <div class="eyebrow">Chart 6</div>
+    <h2>The coast that never ends</h2>
+    <p>The Mandelbrot set comes from one line of arithmetic: start at zero, square the number, add a constant <i>c</i>, and repeat. If the result stays small forever, <i>c</i> is part of the set. The set itself is drawn solid, and every point outside it is colored by how fast it escapes, so the bands trace contours around the shore.</p>
+    <p>Its edge is the roughest coastline in mathematics. In 1998 Mitsuhiro Shishikura proved its boundary has dimension exactly 2, as crinkled as a curve can be. Zoom in anywhere along the shore and new bays and headlands keep appearing.</p>
+  </div>
+  <div class="plate mb-plate">
+    <div class="mb-wrap">
+      <canvas id="mb" aria-label="Zoomable Mandelbrot set. Click to zoom in, shift-click to zoom out, drag to pan, scroll to zoom."></canvas>
+      <div class="mb-hint">Click to zoom · shift-click to zoom out · drag to pan · scroll to zoom</div>
+    </div>
+    <div class="panel">
+      <div class="mb-btns">
+        <button id="mbIn" type="button">Zoom in</button>
+        <button id="mbOut" type="button">Zoom out</button>
+        <button id="mbReset" type="button">Reset</button>
+      </div>
+      <div>
+        <div class="plate-cap">Colors</div>
+        <div class="mb-btns" id="mbColors" role="group" aria-label="Color palette"></div>
+      </div>
+      <div>
+        <div class="plate-cap">Harbors to visit</div>
+        <div class="mb-btns" id="mbPresets"></div>
+      </div>
+      <dl class="readouts">
+        <div><dt>Magnification</dt><dd id="mbMag" class="num hot">1×</dd></div>
+        <div><dt>Iterations</dt><dd id="mbIter" class="num">0</dd></div>
+        <div class="span2"><dt>Center</dt><dd id="mbCenter" class="num mb-center">0</dd></div>
+      </dl>
+      <p class="note">This explorer computes in standard 64-bit numbers, so detail runs out at about 10 trillion times magnification. The real coast keeps going forever.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="col prose">
+    <div class="eyebrow">Chart notes</div>
+    <h2>So how long is the coast?</h2>
+    <p>There is no single answer. A coastline has a length only once you say what scale you are measuring at. What stays fixed across every scale is how fast the length grows as you zoom in, and that rate is the fractal dimension.</p>
+    <p>The same idea shows up in river networks, lungs, lightning, clouds, and the edge of the Mandelbrot set. Whenever detail keeps appearing as you zoom, length stops being the useful number and dimension takes its place.</p>
+  </div>
+</section>
+
+      <div class="footer">
+        <p>
+          Richardson Island is generated by random midpoint displacement and
+          has no real counterpart.
+        </p>
+        <p>
+          Infinite Coastlines is open source on
+          <a href="https://github.com/evoluteur/infinite-coastlines">GitHub</a>
+          with an MIT license.
+        </p>
+        <p>
+          Had fun browsing the app?
+          <a href="https://github.com/sponsors/evoluteur"
+            >Buy me a coffee by becoming a sponsor</a
+          >.
+        </p>
+        <p>
+          You may also like
+          <a href="https://evoluteur.github.io/sunflower-golden-angle/"
+            >Sunflower Golden Angle</a
+          >,
+          <a href="https://evoluteur.github.io/sacred-geometry/"
+            >Sacred Geometry</a
+          >, and
+          <a href="https://evoluteur.github.io/cymatics/">Cymatics</a>.
+        </p>
+        <p class="copyright">
+          &#169; 2026
+          <a href="https://evoluteur.github.io/">Olivier Giulieri</a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

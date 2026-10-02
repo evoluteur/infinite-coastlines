@@ -1,0 +1,380 @@
+/*
+  infinite-coastlines app styles.
+  Colors come from the variables below, set per omg theme
+  (html[data-theme] is set by setTheme in omg.js). The canvases read them too,
+  so the map, plots and Koch snowflake follow the theme.
+*/
+
+:root {
+  /* dark (default theme) */
+  --ic-panel: var(--card-bg, #2d3848);
+  --ic-line: var(--card-border, #3c4a5f);
+  --ic-muted: var(--card-foot, #b7c4d6);
+  --ic-strong: var(--card-strong, white);
+  --ic-accent: #ffb74d;
+  --ic-on-accent: #1a212d;
+  --ic-mono: "Overpass Mono", ui-monospace, Menlo, monospace;
+  /* canvas colors */
+  --ic-plot: #1f2836;
+  --ic-ink: #e6ecf5;
+  --ic-sea: #15304a;
+  --ic-contour: #33658e;
+  --ic-land: #7a6a48;
+  --ic-land-edge: #e6ecf5;
+  --ic-shallows: #6ea3c9;
+}
+html[data-theme="light"] {
+  --ic-panel: #f4f6f9;
+  --ic-accent: #c27a0e;
+  --ic-on-accent: white;
+  --ic-plot: #ffffff;
+  --ic-ink: #1a212d;
+  --ic-sea: #d5e6f0;
+  --ic-contour: #8db4cb;
+  --ic-land: #ecdfbf;
+  --ic-land-edge: #1a212d;
+  --ic-shallows: #f6f9fb;
+}
+html[data-theme="evol-blue"] {
+  --ic-panel: rgba(255, 255, 255, 0.12);
+  --ic-line: rgba(255, 255, 255, 0.35);
+  --ic-muted: #dbe9ff;
+  --ic-accent: #ffb74d;
+  --ic-on-accent: #0277bd;
+  --ic-plot: #0277bd;
+  --ic-ink: #ffffff;
+  --ic-sea: #01579b;
+  --ic-contour: #2e8fd0;
+  --ic-land: #f1e2b8;
+  --ic-land-edge: #01385f;
+  --ic-shallows: #7cc4f0;
+}
+
+.content {
+  max-width: 1120px;
+}
+.tagline {
+  max-width: 62ch;
+}
+
+/* sections */
+section {
+  display: grid;
+  gap: 18px;
+  padding-top: 40px;
+}
+section h2 {
+  margin: 0;
+  font-size: 1.6em;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+.col {
+  max-width: 62ch;
+}
+.prose {
+  display: grid;
+  gap: 12px;
+}
+.prose p,
+section > p {
+  margin: 0;
+  line-height: 1.6;
+}
+.eyebrow,
+.plate-cap {
+  font-size: 0.72em;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ic-muted);
+}
+.eyebrow {
+  color: var(--ic-accent);
+}
+.plate-cap {
+  margin-bottom: 8px;
+}
+.num {
+  font-variant-numeric: tabular-nums;
+}
+.note {
+  font-size: 0.85em;
+  line-height: 1.5;
+  color: var(--ic-muted);
+  border-left: 3px solid var(--ic-accent);
+  padding-left: 12px;
+  margin: 0;
+  max-width: 62ch;
+}
+.note.wide {
+  max-width: none;
+}
+
+/* chart plates: demo on the left, controls and readouts on the right */
+.plate {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+  background: var(--ic-panel);
+  border: 1px solid var(--ic-line);
+  border-radius: 10px;
+  padding: 20px;
+}
+.plate.single {
+  grid-template-columns: minmax(0, 1fr);
+}
+.mb-plate {
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+}
+@media (max-width: 820px) {
+  .plate,
+  .mb-plate {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 12px;
+  }
+}
+.plate canvas {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--ic-line);
+  border-radius: 6px;
+}
+.panel {
+  display: grid;
+  gap: 18px;
+  min-width: 0;
+}
+
+/* controls */
+.ctrl {
+  display: grid;
+  gap: 6px;
+}
+.ctrl label {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.85em;
+}
+.ctrl label output {
+  font-family: var(--ic-mono);
+  color: var(--ic-accent);
+}
+.content input[type="range"] {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  accent-color: var(--ic-accent);
+}
+.content button {
+  margin: 0;
+  justify-self: start;
+}
+.mb-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.mb-btns button,
+#mbColors button,
+#mbPresets button {
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-family: var(--ic-mono);
+  font-size: 0.72em;
+  color: var(--ic-strong);
+  background: var(--ic-panel);
+  border: 1px solid var(--ic-line);
+}
+.mb-btns button:hover,
+.mb-btns button:focus {
+  background: var(--ic-panel);
+  border-color: var(--ic-accent);
+}
+.mb-btns button[aria-pressed="true"] {
+  background: var(--ic-accent);
+  border-color: var(--ic-accent);
+  color: var(--ic-on-accent);
+}
+.content button:focus-visible,
+.content input:focus-visible {
+  outline: 2px solid var(--ic-accent);
+  outline-offset: 2px;
+}
+
+/* readouts */
+dl {
+  margin: 0;
+}
+.readouts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--ic-line);
+  border: 1px solid var(--ic-line);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.readouts div {
+  background: var(--ic-plot);
+  padding: 8px 12px;
+  display: grid;
+  gap: 2px;
+}
+.readouts .span2 {
+  grid-column: 1 / -1;
+}
+.readouts dt {
+  font-size: 0.65em;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ic-muted);
+}
+.readouts dd {
+  margin: 0;
+  font-family: var(--ic-mono);
+  font-size: 1.1em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ic-strong);
+}
+.readouts dd.hot {
+  color: var(--ic-accent);
+}
+.mb-center {
+  font-size: 0.8em !important;
+  word-break: break-all;
+}
+
+/* chart 4: scaling figures */
+.scaling {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+@media (max-width: 720px) {
+  .scaling {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.scaling figure {
+  margin: 0;
+  background: var(--ic-panel);
+  border: 1px solid var(--ic-line);
+  border-radius: 10px;
+  padding: 16px;
+  display: grid;
+  gap: 10px;
+}
+.scaling canvas {
+  width: 100%;
+  display: block;
+}
+.scaling figcaption {
+  font-family: var(--ic-mono);
+  font-size: 0.8em;
+  line-height: 1.5;
+}
+.scaling figcaption b {
+  font-weight: 400;
+  color: var(--ic-accent);
+}
+.formula {
+  font-family: var(--ic-mono);
+  font-size: 1.1em;
+  padding: 14px 18px;
+  border: 1px solid var(--ic-line);
+  border-radius: 10px;
+  background: var(--ic-panel);
+  overflow-x: auto;
+}
+
+/* chart 5: real coasts */
+.coasts {
+  display: grid;
+  gap: 10px;
+  max-width: 44rem;
+}
+.coast-row,
+.axis {
+  display: grid;
+  grid-template-columns: minmax(0, 13rem) minmax(0, 1fr) 3.4rem;
+  gap: 14px;
+  align-items: center;
+}
+.coast-row {
+  font-size: 0.9em;
+}
+.bar {
+  height: 10px;
+  background: var(--ic-panel);
+  border: 1px solid var(--ic-line);
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+}
+.bar i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--ic-accent);
+}
+.coast-row span:last-child {
+  font-family: var(--ic-mono);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.axis {
+  font-family: var(--ic-mono);
+  font-size: 0.65em;
+  color: var(--ic-muted);
+}
+.axis div {
+  display: flex;
+  justify-content: space-between;
+}
+@media (max-width: 560px) {
+  .coast-row {
+    grid-template-columns: minmax(0, 1fr) 3.4rem;
+  }
+  .coast-row .bar {
+    grid-column: 1 / -1;
+    order: 3;
+  }
+  .axis {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .axis > span {
+    display: none;
+  }
+}
+
+/* chart 6: Mandelbrot explorer */
+.mb-wrap {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+#mb {
+  cursor: zoom-in;
+  touch-action: none;
+}
+#mb.dragging {
+  cursor: grabbing;
+}
+.mb-hint {
+  font-family: var(--ic-mono);
+  font-size: 0.65em;
+  color: var(--ic-muted);
+}
+
+.footer {
+  margin-top: 60px;
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}

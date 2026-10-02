@@ -1,0 +1,25 @@
+{
+  "name": "infinite-coastlines",
+  "version": "0.1.0",
+  "description": "An interactive guide to the coastline paradox and fractal dimension: measure an island with shrinking rulers, build a Koch snowflake, and zoom into the Mandelbrot set.",
+  "repository": "github:evoluteur/infinite-coastlines",
+  "homepage": "https://evoluteur.github.io/infinite-coastlines/",
+  "copyright": "(c) 2026 Olivier Giulieri",
+  "author": "Olivier Giulieri (https://evoluteur.github.io/)",
+  "license": "MIT",
+  "keywords": [
+    "fractals",
+    "coastline-paradox",
+    "fractal-dimension",
+    "richardson",
+    "koch-snowflake",
+    "mandelbrot",
+    "self-similarity",
+    "math",
+    "canvas",
+    "javascript"
+  ],
+  "scripts": {
+    "sync:themes": "sh scripts/sync-omg-themes.sh"
+  }
+}
