@@ -2,16 +2,27 @@
 
 How long is a coastline? It depends on the length of your ruler, and the closer you look, the longer it gets. Six interactive charts on the coastline paradox and fractal dimension, from a ruler survey of an island to the edge of the Mandelbrot set. No sign-up and no libraries.
 
-- [Measure a coastline](https://evoluteur.github.io/infinite-coastlines/)
+- [Measure a coastline](https://evoluteur.github.io/infinite-coastlines/) 
 
 ## What it does
 
 1. **Two countries, one border, two lengths**: walk a ruler (1 to 60 km) around a generated island and watch the measured length grow as the ruler shrinks. A log–log plot of length vs. ruler gives the fractal dimension from its slope (D = 1 − slope).
+
+   ![Ruler survey of Richardson Island with its log–log plot](img/ruler-survey.png)
+
 2. **Rougher coasts grow faster**: set the island's roughness (dimension 1.05 to 1.5), generate new islands, and check that the survey recovers it.
 3. **A coastline built from one rule**: step through the Koch snowflake. The perimeter grows by 4/3 at each step while the area settles at 8/5 of the starting triangle.
+
+   ![Koch snowflake](img/koch-snowflake.png)
+
 4. **What "1.26 dimensions" means**: the scaling rule N = s^D for a line, a square and a Koch curve.
 5. **Real coasts, measured**: Richardson's data as interpreted by Mandelbrot (1967), plus Norway.
+
+   ![Fractal dimensions of real coastlines](img/real-coasts.png)
+
 6. **The coast that never ends**: a zoomable Mandelbrot set. Click to zoom in, shift-click to zoom out, drag to pan, scroll to zoom, or jump to a preset. Three palettes: Lagoon, Sunset and Survey chart. It uses 64-bit floats, so zoom is capped near 10¹³×.
+
+   ![Mandelbrot set, Seahorse Valley](img/mandelbrot.png)
 
 ## How it is built
 

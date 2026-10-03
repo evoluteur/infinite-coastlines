@@ -194,7 +194,8 @@ section > p {
   background: var(--ic-panel);
   border-color: var(--ic-accent);
 }
-.mb-btns button[aria-pressed="true"] {
+.mb-btns button[aria-pressed="true"],
+#mbColors button[aria-pressed="true"] {
   background: var(--ic-accent);
   border-color: var(--ic-accent);
   color: var(--ic-on-accent);
