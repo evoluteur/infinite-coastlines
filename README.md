@@ -49,6 +49,6 @@ Infinite-Coastlines is open source at [GitHub](https://github.com/evoluteur/infi
 
 Had fun browsing the app? [Buy me a coffee by becoming a sponsor](https://github.com/sponsors/evoluteur).
 
-You may also be interested in my other projects [Sunflower Golden Angle](https://github.com/evoluteur/sunflower-golden-angle), [Sacred Geometry](https://github.com/evoluteur/sacred-geometry) and [Cymatics](https://github.com/evoluteur/cymatics).
+You may also be interested in my other projects [Sunflower Golden Angle](https://github.com/evoluteur/sunflower-golden-angle), [Sacred Geometry](https://github.com/evoluteur/sacred-geometry) and [Cymatics](https://github.com/evoluteur/cymatics). See them all on [Generative Art](https://evoluteur.github.io/generative-art.html).
 
 Copyright (c) 2026 [Olivier Giulieri](https://evoluteur.github.io/).
